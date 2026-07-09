@@ -9,8 +9,19 @@
 								<img src="<?=SITE_TEMPLATE_PATH?>/img/logo_svg.svg" alt="Полимер" width="206" height="44">
 							</a>
 							<p class="footer__logotext">Оптово-розничная торговля материалами и оборудованием для отопления и водоснабжения в Воронежской области.</p>
-							<a href="/upload/politics.pdf" target="_blank" style="font-size: 11px; text-decoration: none; color: #4d4d4d;">Политика обработки персональных данных</a><br><a href="/upload/rules-recommendation.pdf" target="_blank" style="font-size: 11px; text-decoration: none; color: #4d4d4d;">Правила применения рекомендательных
-технологий</a><br><a href="/upload/politika-ispolzovanija-cookies-polimer.pdf" target="_blank" style="font-size: 11px; text-decoration: none; color: #4d4d4d;">Политика использования cookie-файлов</a>
+
+							<!--<a href="/upload/politics.pdf" target="_blank" style="font-size: 11px; text-decoration: none; color: #4d4d4d;">Политика обработки персональных данных</a><br><a href="/upload/rules-recommendation.pdf" target="_blank" style="font-size: 11px; text-decoration: none; color: #4d4d4d;">Правила применения рекомендательных
+технологий</a><br><a href="/upload/politika-ispolzovanija-cookies-polimer.pdf" target="_blank" style="font-size: 11px; text-decoration: none; color: #4d4d4d;">Политика использования cookie-файлов</a>-->
+
+
+<style>
+	.footer-payment {
+
+		width: 25%;
+	}
+</style>
+
+						<img class="footer-payment" src="/upload/medialibrary/d72/ir7t3xrys2z48ilp8qi20fgyl284scd3.png">
 						</div><!--end::col__1-->
 
 						<div class="footer__col col--2">
@@ -109,20 +120,21 @@
 
     <? endif; ?>
 
-<!-- remove submit type btn in request -->
+
+
+<!-- Roistat Counter Start -->
 <script>
 (function(w, d, s, h, id) {
-    w.roistatProjectId = id; w.roistatHost = h;
+    w.roistatProjectId = id; w.roistatHost = h; w.roistatPage = d.location.href; w.roistatReferrer = d.referrer;
     var p = d.location.protocol == "https:" ? "https://" : "http://";
-    var u = /^.*roistat_visit=[^;]+(.*)?$/.test(d.cookie) ? "/dist/module.js" : "/api/site/1.0/"+id+"/init";
+    var u = /^.*roistat_visit=[^;]+(.*)?$/.test(d.cookie) ? "/dist/module.js" : "/api/site/1.0/"+id+"/init?referrer="+encodeURIComponent(d.location.href);
     var js = d.createElement(s); js.charset="UTF-8"; js.async = 1; js.src = p+h+u; var js2 = d.getElementsByTagName(s)[0]; js2.parentNode.insertBefore(js, js2);
 })(window, document, 'script', 'cloud.roistat.com', '0e03e67d2cf7ac55a00f173bca769e45');
 </script>
+<!-- Roistat Counter End -->
 
 
-
-
-
+<!-- remove submit type btn in request -->
 <script>
         (function(w,d,u){
                 var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/60000|0);

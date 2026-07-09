@@ -5,9 +5,10 @@ $APPLICATION->SetPageProperty("description", "Получение и оплата
 $APPLICATION->SetTitle("Получение и оплата");
 ?>
 
-<h1><?$APPLICATION->ShowTitle(false);?></h1>
+<h1 style="padding-top: 15px;"><?$APPLICATION->ShowTitle(false);?></h1>
 
 <p class="intro pay">Оплатить заказ в нашей компании Вы можете несколькими способами:</p>
+
 <div class="pm__types cl">
 	<div class="type cash">
 		<div class="title">ОПЛАТА <br>НАЛИЧНЫМИ</div>
@@ -21,5 +22,14 @@ $APPLICATION->SetTitle("Получение и оплата");
 		<div class="title">БАНКОВСКИЕ <br>КАРТЫ</div>
 		<div class="txt">Российская процессинговая компания, оказывающая все виды услуг эквайринга, включая традиционные кассовые решения для ритейла, прием банковских карт в системах самообслуживания и интернет-эквайринг.</div>
 	</div>
+	<div class="type sbp" style="position: relative">
+		<img src="/upload/medialibrary/e0f/2i1zetg9r9drwn4pm9j93539nii6cou9.jpg">
+		<a target="_blank" class="type-link" href="/payment/about-sbp/">Подробнее</a>
+	</div>
+	<div class="type split" style="position: relative">
+		<img src="/upload/medialibrary/c23/ljc8m9j4gidi4wobdusqz9cckozd8yy6.jpg">
+		<a target="_blank" class="type-link" href="/payment/about-split/">Подробнее</a>
+	</div>
 </div>
+
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

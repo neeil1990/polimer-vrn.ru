@@ -1,0 +1,30 @@
+(24.05.2026 22:05:31) Location:
+Array
+(
+    [CITY] => Array
+        (
+            [type] => CITY
+            [query] => Геническ%
+        )
+
+    [SUBREGION] => Array
+        (
+            [type] => SUBREGION
+            [query] => Генический%
+        )
+
+    [REGION] => Array
+        (
+            [type] => REGION
+            [query] => Херсонская%
+        )
+
+    [PERSON_TYPE] => 2
+    [DELIVERY] => Array
+        (
+            [0] => 3
+        )
+
+)
+
+

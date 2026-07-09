@@ -89,6 +89,7 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
 
 <meta name="yandex-verification" content="2094627454c95762" />
 <meta name="yandex-verification" content="f47bc301df09d1f5" />
+<meta name="yandex-verification" content="42a4fc94bdf307f0" />
 
 
 <!-- Yandex.Metrika counter -->

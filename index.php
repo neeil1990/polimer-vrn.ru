@@ -360,6 +360,7 @@ $APPLICATION->SetTitle("«Полимер» — главная страница 
 		</div>
 		<a href="/about/" class="content__link">Подробнее</a>
 	</div>
+
 	<div class="mp__articles cl">
 		
 		<?$APPLICATION->IncludeComponent(
