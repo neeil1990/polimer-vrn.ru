@@ -124,18 +124,20 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
       	<div class="container">
 			<header>
 				<div class="hmobile">
-					<div class="wr cl">
+					<div class="wr">
 						<a href="/" class="hmobile__logo">
-							<img src="<?=SITE_TEMPLATE_PATH?>/img/logo_svg.svg" alt="Полимер" width="165" />
+							<img src="<?=SITE_TEMPLATE_PATH?>/img/logo_svg.svg" alt="Полимер" />
 						</a>
-						<div class="hmobile__phone">+7 (473) 207-55-05</div>
-						<a href="/search/index.php" class="hmobile__search"></a>
-						<a href="#" class="menu__trigger">
-							<span class="i1"></span>
-							<span class="i2"></span>
-							<span class="i3"></span>
-						</a>
-						<?$APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "basket.small.mobile", Array(
+
+						<a href="tel:+74732502233" class="hmobile__phone">
+                            <i class="fa fa-phone fa-2x" aria-hidden="true"></i>
+                        </a>
+
+						<a href="/search/index.php" class="hmobile__search">
+                            <img src="/bitrix/templates/main/img/hmobile_search.png" alt="Поиск">
+                        </a>
+
+						<?php $APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "basket.small.mobile", Array(
 							"HIDE_ON_BASKET_PAGES" => "Y",	// Не показывать на страницах корзины и оформления заказа
 							"PATH_TO_BASKET" => SITE_DIR."personal/cart/",	// Страница корзины
 							"PATH_TO_ORDER" => SITE_DIR."personal/order/",	// Страница оформления заказа
@@ -147,14 +149,22 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
 							"SHOW_EMPTY_VALUES" => "Y",	// Выводить нулевые значения в пустой корзине
 							"SHOW_NUM_PRODUCTS" => "Y",	// Показывать количество товаров
 							"SHOW_PERSONAL_LINK" => "Y",	// Отображать персональный раздел
-							"SHOW_PRODUCTS" => "N",	// Показывать список товаров
+							"SHOW_PRODUCTS" => "Y",	// Показывать список товаров
 							"SHOW_TOTAL_PRICE" => "Y",	// Показывать общую сумму по товарам
 						),
 							false
 						);?>
 
+                        <a class="menu__trigger">
+                            <span class="i1"></span>
+                            <span class="i2"></span>
+                            <span class="i3"></span>
+                        </a>
+
 					</div>
-				</div><!--end::hmobile-->
+				</div>
+                <!--end::hmobile-->
+
 				<div class="mm__wrap">
 					<div class="wr cl">
 						<div class="cl">
@@ -169,35 +179,52 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
 								),
 								false
 							);?>
-
-
-							<a href="/personal/orders-list.php" class="mm__account">Личный кабинет</a>
-						</div><!--end::cl-->
-
-						<?$APPLICATION->IncludeComponent("bitrix:menu", "mobile-cat-menu-one", Array(
-							"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
-							"CHILD_MENU_TYPE" => "left",	// Тип меню для остальных уровней
-							"DELAY" => "N",	// Откладывать выполнение шаблона меню
-							"MAX_LEVEL" => "1",	// Уровень вложенности меню
-							"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
-								0 => "",
-							),
-							"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
-							"MENU_CACHE_TYPE" => "N",	// Тип кеширования
-							"MENU_CACHE_USE_GROUPS" => "Y",	// Учитывать права доступа
-							"ROOT_MENU_TYPE" => "mobile-categories",	// Тип меню для первого уровня
-							"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
-						),
-							false
-						);?>
-
-						<div class="cl">
-							<a href="/sale/" class="mm__action">Акции</a>
-							<a href="/calc/" class="mm__calculation">Бесплатный расчет</a>
 						</div>
+                        <!--end::cl-->
+
+                        <ul class="mm__category cl">
+                            <li class="maincategory maincategory--1 cl">
+                                <a href="/personal/orders-list.php">
+                                    <span class="img"></span>
+                                    <span class="name">Личный кабинет</span>
+                                </a>
+                            </li>
+                            <li class="maincategory maincategory--1 cl">
+                                <a href="/catalog/inzhenernaya_santekhnika/">
+                                    <span class="img"></span>
+                                    <span class="name">Инженерная<br> сантехника</span>
+                                </a>
+                            </li>
+                            <li class="maincategory maincategory--1 cl">
+                                <a href="/catalog/stroitelno_otdelochnye_materialy/">
+                                    <span class="img"></span>
+                                    <span class="name">Cтроительные<br> материалы</span>
+                                </a>
+                            </li>
+                            <li class="maincategory maincategory--1 cl">
+                                <a href="/catalog/avtomatika/">
+                                    <span class="img"></span>
+                                    <span class="name">Ворота,<br> автоматика,<br> рольставни</span>
+                                </a>
+                            </li>
+                            <li class="maincategory maincategory--1 cl">
+                                <a href="/sale/">
+                                    <span class="img"></span>
+                                    <span class="name">Акции</span>
+                                </a>
+                            </li>
+                            <li class="maincategory maincategory--1 cl">
+                                <a href="/calc/">
+                                    <span class="img"></span>
+                                    <span class="name">Бесплатный расчет</span>
+                                </a>
+                            </li>
+                        </ul>
+
 						<div class="mm__phone">
                             <a href="tel:<?=tel(tplvar('phone_top_mobile'))?>" class="phone_engineer"><?= tplvar('phone_top_mobile', true);?></a>
                         </div>
+
 						<div class="cl">
 							<div class="mm__timework header__timework">
 								<div class="line cl">
@@ -332,7 +359,7 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
 				</div><!--end::header__main-->
 
                 <div class="header__bottom"> <!-- fixed -->
-                    <div class="wr cl">
+                    <div class="wr">
 
                         <a href="/" class="logo">
                             <img src="<?=SITE_TEMPLATE_PATH?>/img/logo_svg.svg" alt="Полимер">
@@ -489,7 +516,9 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
                             false
                         );?>
 
-                        <a href="/personal/orders-list.php" class="header__account">Личный кабинет</a>
+                        <a href="/personal/orders-list.php" class="header__account">
+                            <i class="fa fa-user-o fa-lg" aria-hidden="true"></i> <span>Личный кабинет</span>
+                        </a>
 
                         <?$APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "basket.small", Array(
                             "HIDE_ON_BASKET_PAGES" => "Y",	// Не показывать на страницах корзины и оформления заказа
@@ -503,7 +532,7 @@ $noh1    = $pages[1] == 'personal' || $pages[1] == 'price' || ($pages[1] == 'cat
                             "SHOW_EMPTY_VALUES" => "Y",	// Выводить нулевые значения в пустой корзине
                             "SHOW_NUM_PRODUCTS" => "Y",	// Показывать количество товаров
                             "SHOW_PERSONAL_LINK" => "Y",	// Отображать персональный раздел
-                            "SHOW_PRODUCTS" => "N",	// Показывать список товаров
+                            "SHOW_PRODUCTS" => "Y",	// Показывать список товаров
                             "SHOW_TOTAL_PRICE" => "Y",	// Показывать общую сумму по товарам
                         ),
                             false

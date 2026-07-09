@@ -48,6 +48,32 @@ $PRINT_PRICE = Loc::getMessage(
 		'#UNIT#' => $arItem['ITEM_MEASURE']['TITLE']
 	)
 );
+
+
+
+$inCompare = inCompare($arItem['IBLOCK_ID'], $arItem['ID']);
+
+// собираем кадры hover-слайдера превью: основное фото + дополнительные
+$sliderImages = [];
+if (!empty($arItem['PREVIEW_PICTURE']['ID'])) {
+	$sliderImages[] = resizeImage($arItem['PREVIEW_PICTURE']['ID'], 220, 293);
+}
+
+if (!empty($arItem['PROPERTIES']['MORE_PHOTO']['VALUE']) && is_array($arItem['PROPERTIES']['MORE_PHOTO']['VALUE'])) {
+	foreach ($arItem['PROPERTIES']['MORE_PHOTO']['VALUE'] as $id) {
+		$src = resizeImage($id, 220, 293);
+		if ($src) {
+			$sliderImages[] = $src;
+		}
+	}
+}
+
+$sliderImages = array_values(array_unique($sliderImages));
+if (empty($sliderImages)) {
+	$sliderImages[] = resizeImage(0, 220, 293); // no_photo fallback
+}
+
+$hasSlider = count($sliderImages) > 1;
 ?>
 
 <div class="item" id="product_<?=$arItem['ID']?>">
@@ -55,19 +81,36 @@ $PRINT_PRICE = Loc::getMessage(
 		<div class="inner">
 			
 			<div class="compare">
-				<label>
-					<input type="checkbox" id-cat="<?=$arItem['IBLOCK_SECTION_ID']?>" value="<?=$arItem['ID']?>">
-					<span>Сравнить</span>
-				</label>
+                <?php if ($inCompare): ?>
+                    <label>
+                        <input type="checkbox" id-cat="<?=$arItem['IBLOCK_SECTION_ID']?>" value="<?=$arItem['ID']?>" checked>
+                        <span><a href="/catalog/compare/">Перейти</a></span>
+                    </label>
+                <?php else: ?>
+                    <label>
+                        <input type="checkbox" id-cat="<?=$arItem['IBLOCK_SECTION_ID']?>" value="<?=$arItem['ID']?>">
+                        <span>Сравнить</span>
+                    </label>
+                <?php endif; ?>
 			</div>
 			
 			<div class="close"></div>
 			
-			<a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="pic">
-			   <span>
-				  <img src="<?=resizeImage($arItem['PREVIEW_PICTURE']['ID'], 150, 150)?>" alt="<?=$arItem['NAME']?>">
+			<a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="pic<?= $hasSlider ? ' has-slider' : '' ?>">
+			   <span class="pic-slides">
+				  <?php foreach ($sliderImages as $i => $src): ?>
+					  <img class="pic-slide<?= $i === 0 ? ' active' : '' ?>" src="<?=$src?>" alt="<?=$arItem['NAME']?>"<?= $i > 0 ? ' loading="lazy"' : '' ?>>
+				  <?php endforeach; ?>
 			   </span>
-			   
+
+			   <?php if ($hasSlider): ?>
+				   <span class="pic-dots">
+					   <?php foreach ($sliderImages as $i => $src): ?>
+						   <i class="pic-dot<?= $i === 0 ? ' active' : '' ?>"></i>
+					   <?php endforeach; ?>
+				   </span>
+			   <?php endif; ?>
+
 			   <?php if ($price["PERCENT"] > 0): ?>
 					<div class="discount">- <?=$price["PERCENT"]?> %</div>
 				<?php endif; ?>

@@ -31,6 +31,8 @@ $PRINT_PRICE = Loc::getMessage(
 		'#UNIT#' => $arResult['ITEM_MEASURE']['TITLE']
 	)
 );
+
+$inCompare = inCompare($arResult['IBLOCK_ID'], $arResult['ID']);
 ?>
 <script type="text/javascript">
     var viewedCounter = {
@@ -55,12 +57,18 @@ $PRINT_PRICE = Loc::getMessage(
 <div class="prod_card cl">
    <div class="pc__prod-info">
 
+       <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb_mobile", Array(
+           "PATH" => "",
+           "SITE_ID" => SITE_ID,
+           "START_FROM" => "0",
+       ), false);?>
+
        <div class="cl">
            <div class="bb_col">
                <h1><?=$arResult['NAME']?></h1>
            </div>
            <? if($arResult['BRAND']): ?>
-           <div class="bb_col right">
+           <div class="bb_col right pc__mobile-below-gallery">
                <a href="/brands/<?=$arResult['BRAND']['URL']?>/" target="_blank">
                    <img src="<?=$arResult['BRAND']['IMAGE']?>" alt="<?=$arResult['NAME']?>" style="max-height:50px">
                </a>
@@ -69,20 +77,20 @@ $PRINT_PRICE = Loc::getMessage(
        </div>
 
        <div class="cl mb-40">
-           <div class="bb_col">
+           <div class="bb_col pc__mobile-below-gallery">
                <span>Код товара: <?=$arResult['PROPERTIES']['CML2_TRAITS']['VALUE'][2];?></span>
            </div>
            <!--<div class="bb_col">
                <span><a href="#" class="blue">Бесплатная доставка</a></span>
            </div>-->
            <? if ($price['PERCENT'] > 0): ?>
-               <div class="bb_col" >
+               <div class="bb_col pc__mobile-below-gallery" >
 				   <span><a href="#" class="red" title='<b>Скидка <?=$price['PERCENT']?>%</b> При заказе через интернет-магазин'>Скидка <?=$price['PERCENT']?>% онлайн</a></span>
 			   </div>
            <? endif; ?>
 		   
-			<div class="bb_col">
-               <span><a href="#" class="blue" title="<ul><li>Доставим бесплатно заказы стоимостью выше 30 000 р. по городу.</li><li>Предложение действует при заказе и оплате на сайте или в кассе магазина.</li><li>Максимальный габарит товара 4 м и вес не более 1 тн.</li><li>Доставка осуществляется в течение 1-5 рабочих дней после заказа.</li><li>Для получения товара необходимо при себе иметь паспорт или иной документ, удостоверяющий личность.</li><li>Подъем на этаж не осуществляется.</li><li>Условия действуют по г. Воронеж.</li></ul>">Доставим бесплатно заказы стоимостью выше 30 000 р. по городу*.</a></span>
+			<div class="bb_col pc__mobile-below-gallery">
+               <span><a href="#" class="blue" title="<ul><li>Доставим бесплатно заказы стоимостью выше 20 000 р. по городу.</li><li>Предложение действует при заказе и оплате на сайте или в кассе магазина.</li><li>Максимальный габарит товара 4 м и вес не более 1 тн.</li><li>Доставка осуществляется в течение 1-5 рабочих дней после заказа.</li><li>Для получения товара необходимо при себе иметь паспорт или иной документ, удостоверяющий личность.</li><li>Подъем на этаж не осуществляется.</li><li>Условия действуют по г. Воронеж.</li></ul>">Доставим бесплатно заказы стоимостью выше 20 000 р. по городу*.</a></span>
            </div>
            <div class="bb_col right">
                <? if($arResult['RATING']['COUNT']): ?>
@@ -110,10 +118,6 @@ $PRINT_PRICE = Loc::getMessage(
                      </li>
                  <? endforeach; ?>
              </ul>
-             <div class="GallerylSAction">
-                 <a class="GallerylSPrev"></a>
-                 <a class="GallerylSNext"></a>
-             </div>
          </div>
 
          <div class="pc__buy-block cl">
@@ -125,17 +129,14 @@ $PRINT_PRICE = Loc::getMessage(
             <? else: ?>
                 <div class="bb_row">
                    <div class="price">
-                      
 					  <div class="price-new"><?=$PRINT_PRICE;?></div>
-					  
 					  <? if ($price["BASE_PRICE"] > $price["PRICE"]): ?>
 						<div class="price-old"><?=$PRINT_BASE_PRICE;?></div>
 					  <? endif; ?>
-                        
-                       <? if($price['PERCENT'] > 0): ?>
-                           <div class="sale-y"><span>- <?=$price['PERCENT']?>%</span></div>
-                       <? endif; ?>
                    </div>
+                    <? if($price['PERCENT'] > 0): ?>
+                        <div class="sale-y"><span>- <?=$price['PERCENT']?>%</span></div>
+                    <? endif; ?>
                 </div>
             <? endif; ?>
 
@@ -149,10 +150,14 @@ $PRINT_PRICE = Loc::getMessage(
             <a href="#" class="bb_btn spec_help show-popup" data-id="specialist"><span>Помощь специалиста</span></a>
 
              <div class="bb_compare">
-                 <a href="#" id="compare" data-id="<?=$arResult['IBLOCK_SECTION_ID']?>" data-value="<?=$arResult['ID']?>">
-                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                     <span>Сравнить</span>
-                 </a>
+                 <?php if ($inCompare): ?>
+                     <a href="/catalog/compare/" data-id="<?=$arResult['IBLOCK_SECTION_ID']?>" data-value="<?=$arResult['ID']?>">Перейти в сравнение товаров</a>
+                 <?php else: ?>
+                     <a href="#" id="compare" data-id="<?=$arResult['IBLOCK_SECTION_ID']?>" data-value="<?=$arResult['ID']?>">
+                         <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                         <span>Сравнить</span>
+                     </a>
+                 <?php endif; ?>
              </div>
 
              <div class="bb_info">
@@ -194,134 +199,141 @@ $PRINT_PRICE = Loc::getMessage(
 
       </div>
 
-
-
       <div class="pc__tabs" id="all_tabs">
          <div class="t-list cl">
-            <a href="#"><span>Описание</span></a>
+            <a href="#" class="active"><span>Описание</span></a>
             <a href="#"><span>Технические характеристики</span></a>
             <a href="#"><span>Отзывы </span></a>
-            <a href="#" class="active"><span>Наличие в магазинах</span></a>
+            <a href="#"><span>Наличие в магазинах</span></a>
          </div>
          <div class="t-content">
-            <div class="tab tab_des">
+            <div class="tab tab_des active m_active">
                <a href="#" class="mtb" onclick="return false">Описание</a>
                <div class="content">
-                   <div class="cl">
-                       <div class="bb_col w-100">
-                           <?=$arResult['DETAIL_TEXT']?>
-                           <? foreach($arResult['PROPERTIES']['FILES']['VALUE'] as $key => $file): ?>
-                               <p><a class="download" href="<?=CFile::GetPath($file);?>"><?=$arResult['PROPERTIES']['FILES']['DESCRIPTION'][$key];?></a></p>
-                           <? endforeach; ?>
-                       </div>
-                       <div class="bb_col w-30"><? include('inc/list.php'); ?></div>
-                   </div>
+                   <?=$arResult['DETAIL_TEXT']?>
+                   <?php foreach($arResult['PROPERTIES']['FILES']['VALUE'] as $key => $file): ?>
+                       <p><a class="download" href="<?=CFile::GetPath($file);?>"><?=$arResult['PROPERTIES']['FILES']['DESCRIPTION'][$key];?></a></p>
+                   <?php endforeach; ?>
                </div>
             </div>
             <div class="tab tab_tec">
                <a href="#" class="mtb" onclick="return false">Технические характеристики</a>
                <div class="content">
-                   <div class="cl">
-                       <div class="bb_col w-70">
-                           <?
-						   $arShowProp = $arResult['PROPERTIES'];
-						   
-						   $remove = array_keys($arResult['DISPLAY_PROPERTIES']);
-						   $remove[] = 'MORE_PHOTO';
-						   $remove[] = 'FILES';
-						   
-						   // removed properties from show
-						   foreach ($remove as $prop) {
-							   unset($arShowProp[$prop]);
-						   }
+                   <?php if ($arResult['PRODUCT']['WEIGHT']): ?>
+                       <div class="line cl">
+                           <div class="prop">Вес (гр.)</div>
+                           <div class="val"><?=$arResult['PRODUCT']['WEIGHT']?></div>
+                       </div>
+                   <?php endif; ?>
 
-						   foreach ($arShowProp as $prop) {
-							   $value = is_array($prop['VALUE']) ? implode(", ", $prop['VALUE']) : $prop['VALUE'];
-							   
-							   if ($value):
-							   ?>
-								   <div class="line cl">
-									   <div class="prop"><?=$prop['NAME'];?></div>
-									   <div class="val"><?=is_array($prop['VALUE']) ? implode(", ", $prop['VALUE']) : $prop['VALUE'];?></div>
-								   </div>
-							   <?
-							   endif; 
-						   }
+                   <?php if ($arResult['PRODUCT']['LENGTH']): ?>
+                       <div class="line cl">
+                           <div class="prop">Длина (мм)</div>
+                           <div class="val"><?=$arResult['PRODUCT']['LENGTH']?></div>
+                       </div>
+                   <?php endif; ?>
+
+                   <?php if ($arResult['PRODUCT']['WIDTH']): ?>
+                       <div class="line cl">
+                           <div class="prop">Ширина (мм)</div>
+                           <div class="val"><?=$arResult['PRODUCT']['WIDTH']?></div>
+                       </div>
+                   <?php endif; ?>
+
+                   <?php if ($arResult['PRODUCT']['HEIGHT']): ?>
+                       <div class="line cl">
+                           <div class="prop">Высота (мм)</div>
+                           <div class="val"><?=$arResult['PRODUCT']['HEIGHT']?></div>
+                       </div>
+                   <?php endif; ?>
+
+                   <?php
+                   $arShowProp = $arResult['PROPERTIES'];
+
+                   $remove = array_keys($arResult['DISPLAY_PROPERTIES']);
+                   $remove[] = 'MORE_PHOTO';
+                   $remove[] = 'FILES';
+
+                   // removed properties from show
+                   foreach ($remove as $prop) {
+                       unset($arShowProp[$prop]);
+                   }
+
+                   foreach ($arShowProp as $prop) {
+                       $value = is_array($prop['VALUE']) ? implode(", ", $prop['VALUE']) : $prop['VALUE'];
+
+                       if ($value):
                            ?>
-                       </div>
-                       <div class="bb_col w-30">
-                           <? include('inc/list.php'); ?>
-                       </div>
-                   </div>
+                           <div class="line cl">
+                               <div class="prop"><?=$prop['NAME'];?></div>
+                               <div class="val"><?=is_array($prop['VALUE']) ? implode(", ", $prop['VALUE']) : $prop['VALUE'];?></div>
+                           </div>
+                       <?
+                       endif;
+                   }
+                   ?>
                </div>
             </div>
             <div class="tab tab_fed">
                <a href="#" class="mtb" onclick="return false">Отзывы</a>
                <div class="content">
-                   <div class="cl">
-                       <div class="bb_col w-70">
-                           <?$APPLICATION->IncludeComponent("khayr:main.comment", "catalog.comment", Array(
-                               "OBJECT_ID" => $arResult["ID"],	// ID объекта комментирования
-                               "COUNT" => "10",	// Количество комментариев на странице
-                               "MAX_DEPTH" => "1",	// Максимальный уровень вложенности
-                               "JQUERY" => "N",	// Подключить jQuery (если не подключен)
-                               "MODERATE" => "N",	// Включить премодерацию
-                               "LEGAL" => "N",	// Требовать согласиться с правилами
-                               "LEGAL_TEXT" => "Я согласен с правилами размещения сообщений на сайте.",	// Текст галочки о согласии с правилами
-                               "CAN_MODIFY" => "N",	// Разрешить редактирование комментария
-                               "NON_AUTHORIZED_USER_CAN_COMMENT" => "Y",	// Разрешить неавторизованным пользователям добавлять комментарии
-                               "REQUIRE_EMAIL" => "Y",	// Требовать e-mail
-                               "USE_CAPTCHA" => "Y",	// Показывать CAPTCHA неавторизованным пользователям
-                               "AUTH_PATH" => "/personal/",	// Путь до страницы авторизации
-                               "ACTIVE_DATE_FORMAT" => "j F Y, G:i",	// Формат показа даты
+                   <?$APPLICATION->IncludeComponent("khayr:main.comment", "catalog.comment", Array(
+                           "OBJECT_ID" => $arResult["ID"],	// ID объекта комментирования
+                           "COUNT" => "10",	// Количество комментариев на странице
+                           "MAX_DEPTH" => "1",	// Максимальный уровень вложенности
+                           "JQUERY" => "N",	// Подключить jQuery (если не подключен)
+                           "MODERATE" => "N",	// Включить премодерацию
+                           "LEGAL" => "N",	// Требовать согласиться с правилами
+                           "LEGAL_TEXT" => "Я согласен с правилами размещения сообщений на сайте.",	// Текст галочки о согласии с правилами
+                           "CAN_MODIFY" => "N",	// Разрешить редактирование комментария
+                           "NON_AUTHORIZED_USER_CAN_COMMENT" => "Y",	// Разрешить неавторизованным пользователям добавлять комментарии
+                           "REQUIRE_EMAIL" => "Y",	// Требовать e-mail
+                           "USE_CAPTCHA" => "Y",	// Показывать CAPTCHA неавторизованным пользователям
+                           "AUTH_PATH" => "/personal/",	// Путь до страницы авторизации
+                           "ACTIVE_DATE_FORMAT" => "j F Y, G:i",	// Формат показа даты
 
-                               "LOAD_MARK" => "Y",	// Разрешить оценивать
-                               "LOAD_DIGNITY" => "Y",	// Разрешить Достоинства
-                               "LOAD_FAULT" => "Y",	// Разрешить Недостатки
-                               "ADDITIONAL" => array(	// Дополнительные свойства
+                           "LOAD_MARK" => "Y",	// Разрешить оценивать
+                           "LOAD_DIGNITY" => "Y",	// Разрешить Достоинства
+                           "LOAD_FAULT" => "Y",	// Разрешить Недостатки
+                           "ADDITIONAL" => array(	// Дополнительные свойства
                                    0 => "Опыт использования",
-                               ),
-                               "ALLOW_RATING" => "N",	// Включить рейтинг
-                               "DISPLAY_TOP_PAGER" => "N",	// Выводить над списком
-                               "DISPLAY_BOTTOM_PAGER" => "Y",	// Выводить под списком
-                               "PAGER_TITLE" => "",	// Название категорий
-                               "PAGER_SHOW_ALWAYS" => "N",	// Выводить всегда
-                               "PAGER_TEMPLATE" => ".default",	// Шаблон постраничной навигации
-                               "PAGER_DESC_NUMBERING" => "N",	// Использовать обратную навигацию
-                               "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",	// Время кеширования страниц для обратной навигации
-                               "PAGER_SHOW_ALL" => "N",	// Показывать ссылку "Все"
-                               "COMPONENT_TEMPLATE" => ".default"
                            ),
-                               false
-                           );?>
-                       </div>
-                       <div class="bb_col w-30"><? include('inc/list.php'); ?></div>
-                   </div>
+                           "ALLOW_RATING" => "N",	// Включить рейтинг
+                           "DISPLAY_TOP_PAGER" => "N",	// Выводить над списком
+                           "DISPLAY_BOTTOM_PAGER" => "Y",	// Выводить под списком
+                           "PAGER_TITLE" => "",	// Название категорий
+                           "PAGER_SHOW_ALWAYS" => "N",	// Выводить всегда
+                           "PAGER_TEMPLATE" => ".default",	// Шаблон постраничной навигации
+                           "PAGER_DESC_NUMBERING" => "N",	// Использовать обратную навигацию
+                           "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",	// Время кеширования страниц для обратной навигации
+                           "PAGER_SHOW_ALL" => "N",	// Показывать ссылку "Все"
+                           "COMPONENT_TEMPLATE" => ".default"
+                   ),
+                           false
+                   );?>
                </div>
             </div>
-            <div class="tab tab_nal active">
+            <div class="tab tab_nal">
                <a href="#" class="mtb" onclick="return false">Наличие в магазинах</a>
                <div class="content">
-                   <div class="cl">
-                       <div class="bb_col w-70">
-                           <?$APPLICATION->IncludeComponent(
-                               "nbrains:catalog.store.amount",
-                               "store",
-                               array(
+                   <?php $APPLICATION->IncludeComponent(
+                           "nbrains:catalog.store.amount",
+                           "store",
+                           array(
                                    "CACHE_TIME" => "36000",
                                    "CACHE_TYPE" => "N",
                                    "ELEMENT_CODE" => "",
                                    "ELEMENT_ID" => $arResult["ID"],
                                    "FIELDS" => array(
-                                       0 => "TITLE",
-                                       1 => "ADDRESS",
-                                       2 => "DESCRIPTION",
-                                       3 => "PHONE",
-                                       4 => "EMAIL",
-                                       5 => "IMAGE_ID",
-                                       6 => "COORDINATES",
-                                       7 => "SCHEDULE",
-                                       8 => "",
+                                           0 => "TITLE",
+                                           1 => "ADDRESS",
+                                           2 => "DESCRIPTION",
+                                           3 => "PHONE",
+                                           4 => "EMAIL",
+                                           5 => "IMAGE_ID",
+                                           6 => "COORDINATES",
+                                           7 => "SCHEDULE",
+                                           8 => "",
                                    ),
                                    "IBLOCK_ID" => "21",
                                    "IBLOCK_TYPE" => "1c_catalog",
@@ -331,45 +343,90 @@ $PRINT_PRICE = Loc::getMessage(
                                    "SHOW_EMPTY_STORE" => "N",
                                    "SHOW_GENERAL_STORE_INFORMATION" => "N",
                                    "STORES" => array(
-                                       0 => "8",
-                                       1 => "6",
-                                       2 => "5",
-                                       3 => "3",
-                                       4 => "17",
-                                       5 => "7",
-                                       6 => "4",
-                                       7 => "19",
+                                           0 => "8",
+                                           1 => "6",
+                                           2 => "5",
+                                           3 => "3",
+                                           4 => "17",
+                                           5 => "7",
+                                           6 => "4",
+                                           7 => "19",
                                    ),
                                    "STORE_PATH" => "",
                                    "USER_FIELDS" => array(
-                                       0 => "UF_STORE",
-                                       1 => "",
+                                           0 => "UF_STORE",
+                                           1 => "",
                                    ),
                                    "USE_MIN_AMOUNT" => "N",
                                    "COMPONENT_TEMPLATE" => "store",
                                    "COMPOSITE_FRAME_MODE" => "A",
                                    "COMPOSITE_FRAME_TYPE" => "AUTO",
                                    "CATALOG_QUANTITY" => $arResult['CATALOG_QUANTITY']
-                               ),
-                               false
-                           );?>
-                       </div>
-                       <div class="bb_col w-30">
-                           <? include('inc/list.php'); ?>
-                       </div>
-                   </div>
-
+                           ),
+                           false
+                   );?>
                </div>
             </div>
          </div>
       </div>
-   </div><!--end::pc__prod-info-->
-
-
+   </div>
+   <!--end::pc__prod-info-->
 
    <div class="cl"></div>
 
     <div class="col-show-slides-6">
+        <?php
+        $APPLICATION->IncludeComponent("bitrix:sale.recommended.products","",
+            Array(
+                    "PAGER_TITLE" => "С этим товаром покупают",
+                    "ACTION_VARIABLE" => "action",
+                    "ADDITIONAL_PICT_PROP_10" => "MORE_PHOTO",
+                    "ADDITIONAL_PICT_PROP_11" => "MORE_PHOTO",
+                    "ADDITIONAL_PICT_PROP_12" => "MORE_PHOTO",
+                    "ADD_PROPERTIES_TO_BASKET" => "Y",
+                    "BASKET_URL" => "/personal/basket.php",
+                    "CACHE_TIME" => "86400",
+                    "CACHE_TYPE" => "A",
+                    "CART_PROPERTIES_10" => array("",""),
+                    "CART_PROPERTIES_11" => array("",""),
+                    "CART_PROPERTIES_12" => array("",""),
+                    "CODE" => "",
+                    "CONVERT_CURRENCY" => "N",
+                    "DETAIL_URL" => "",
+                    "HIDE_NOT_AVAILABLE" => "N",
+                    "IBLOCK_ID" => "21",
+                    "IBLOCK_TYPE" => "1c_catalog",
+                    "ID" => $arResult['ID'],
+                    "LABEL_PROP_10" => "-",
+                    "LABEL_PROP_11" => "-",
+                    "LINE_ELEMENT_COUNT" => "3",
+                    "MESS_BTN_BUY" => "РљСѓРїРёС‚СЊ",
+                    "MESS_BTN_DETAIL" => "РџРѕРґСЂРѕР±РЅРµРµ",
+                    "MESS_BTN_SUBSCRIBE" => "РџРѕРґРїРёСЃР°С‚СЊСЃСЏ",
+                    "MESS_NOT_AVAILABLE" => "РќРµС‚ РІ РЅР°Р»РёС‡РёРё",
+                    "MIN_BUYES" => "1",
+                    "OFFER_TREE_PROPS_12" => array(),
+                    "PAGE_ELEMENT_COUNT" => "30",
+                    "PARTIAL_PRODUCT_PROPERTIES" => "N",
+                    "PRICE_CODE" => array(),
+                    "PRICE_VAT_INCLUDE" => "Y",
+                    "PRODUCT_ID_VARIABLE" => "id",
+                    "PRODUCT_PROPS_VARIABLE" => "prop",
+                    "PRODUCT_QUANTITY_VARIABLE" => "quantity",
+                    "PRODUCT_SUBSCRIPTION" => "N",
+                    "PROPERTY_CODE_10" => array("",""),
+                    "PROPERTY_CODE_11" => array("",""),
+                    "PROPERTY_CODE_12" => array("",""),
+                    "SHOW_DISCOUNT_PERCENT" => "N",
+                    "SHOW_IMAGE" => "Y",
+                    "SHOW_NAME" => "Y",
+                    "SHOW_OLD_PRICE" => "N",
+                    "SHOW_PRICE_COUNT" => "1",
+                    "TEMPLATE_THEME" => "blue",
+                    "USE_PRODUCT_QUANTITY" => "N"
+            )
+        );
+        ?>
 
         <?$APPLICATION->IncludeComponent("bitrix:news.list", "same-product", Array(
             "ACTIVE_DATE_FORMAT" => "d.m.Y",	// Р¤РѕСЂРјР°С‚ РїРѕРєР°Р·Р° РґР°С‚С‹
